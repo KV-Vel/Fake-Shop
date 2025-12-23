@@ -3,7 +3,7 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import type { RouteObject } from "react-router";
 import ShopPage from "../pages/ShopPage/ShopPage";
 import CartPage from "../pages/CartPage/CartPage";
-import HomePage from "../pages/HomePage/Homepage";
+import HomePage from "../pages/HomePage/HomePage";
 
 const routes: RouteObject[] = [
     {

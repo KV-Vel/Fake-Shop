@@ -1,5 +1,5 @@
-import styles from "./Shoppage.module.css";
+import styles from "./ShopPage.module.css";
 
 export default function ShopPage() {
-    return <></>;
+    return <>SHOP</>;
 }
