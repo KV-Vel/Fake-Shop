@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import Homepage from "./Homepage";
+import HomePage from "./Homepage";
 
 describe("Homepage tests", () => {
     beforeEach(() => {
-        render(<Homepage />);
+        render(<HomePage />);
     });
 
     it("Homepage should render at the start and have nav bar", () => {
