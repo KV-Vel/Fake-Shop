@@ -1,5 +1,64 @@
-.navigationBar {
+.mobileMenuBtn {
     display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    margin-block-start: 20px;
+    padding: 10px;
+}
+
+.mobileMenuLine {
+    width: 35px;
+    height: 2px;
+    background-color: black;
+    transition: transform 0.2s ease;
+}
+
+.mobileMenuBtn.active > .mobileMenuLine:first-child {
+    transform: rotate(45deg) translateY(5px);
+}
+.mobileMenuBtn.active > .mobileMenuLine:nth-child(2) {
+    display: none;
+}
+.mobileMenuBtn.active > .mobileMenuLine:last-child {
+    transform: rotate(-45deg) translateY(-5px);
+}
+
+.navigationLinksList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     font-family: "DM Sans", sans-serif;
     font-size: 1rem;
+    text-transform: uppercase;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #f1f1f1;
+    transition: transform 0.2s ease-in;
+    transform: translate(-100%);
+    height: 100vh;
+    width: 100%;
+    z-index: 1;
+    padding-block-start: 30px;
+    padding-inline-start: calc(30%);
+    align-items: center;
+
+    gap: 1rem;
+}
+.navigationLinksList.active {
+    transform: translate(-30%);
+}
+
+body:has(.navigationLinksList.active) {
+    overflow-y: hidden;
+}
+
+@media (min-width: 612px) {
+    .mobileMenuBtn {
+        display: none;
+    }
 }

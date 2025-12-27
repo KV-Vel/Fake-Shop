@@ -16,7 +16,12 @@ describe("Navigation", () => {
         expect(window.location.pathname).toBe("/");
     });
 
-    it("should have all 3 links rendered", () => {
+    it("mobile menu should have 3 links rendered after mobile menu opened", async () => {
+        const user = userEvent.setup();
+
+        const mobileMenuBtn = screen.getByRole("button", { name: "Open navigation" });
+        await user.click(mobileMenuBtn);
+
         const shopLink = screen.getByRole("link", { name: /shop/i });
         const homeLink = screen.getByRole("link", { name: /home/i });
         const cartLink = screen.getByRole("link", { name: /cart/i });
@@ -28,6 +33,9 @@ describe("Navigation", () => {
 
     it("click on links should change url according to link", async () => {
         const user = userEvent.setup();
+
+        const mobileMenuBtn = screen.getByRole("button", { name: "Open navigation" });
+        await user.click(mobileMenuBtn);
 
         const [homeLink, shopLink, cartLink] = screen.getAllByRole("link");
 
