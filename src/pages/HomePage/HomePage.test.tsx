@@ -1,14 +1,16 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router";
+import { render } from "../../../tests/test-utils";
+import App from "../App";
 import HomePage from "./HomePage";
 
-test.skip(() => {
-    // describe("Homepage tests", () => {
-    //     beforeEach(() => {
-    //         render(<HomePage />);
-    //     });
-    //     it("Homepage should render at the start and have nav bar", () => {
-    //         expect(screen.getByRole("main")).toBeInTheDocument();
-    //         expect(screen.getByRole("navigation")).toBeInTheDocument();
-    //     });
-    // });
+describe("Homepage tests", () => {
+    beforeEach(() => {
+        render(<HomePage />);
+    });
+    it("Homepage have hero section with 2 articles", () => {
+        screen.debug();
+        const articles = screen.getAllByRole("article");
+        expect(articles).toHaveLength(2);
+    });
 });
