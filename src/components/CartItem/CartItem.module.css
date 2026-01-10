@@ -1,0 +1,31 @@
+.cartItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    background-color: white;
+    padding: 0.5rem;
+}
+
+label {
+    width: fit-content;
+}
+
+.inputWrapper {
+    display: flex;
+    max-width: 100px;
+}
+
+.cartItemInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.cartInfoMain {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
