@@ -15,3 +15,7 @@ body {
     flex-direction: column;
     gap: 5rem;
 }
+
+input {
+    width: 100%;
+}
