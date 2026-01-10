@@ -29,6 +29,12 @@ export interface Response {
     data: Product[];
 }
 
-export interface CartItem extends Partial<Product> {
-    itemNumber: number;
+export interface CartItem extends Pick<Product, "name" | "image_path" | "price" | "id"> {
+    count: number;
 }
+
+export type CartContext = {
+    cartItems: Map<Product["id"], CartItem>;
+    addToCart: (item: CartItem) => void;
+    deleteFromCart: (id: Product["id"]) => void;
+};
