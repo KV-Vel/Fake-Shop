@@ -1,22 +1,18 @@
-import { render, screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "../../pages/App";
 import { BrowserRouter } from "react-router";
 
 describe("Navigation", () => {
     beforeEach(() => {
-        render(
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>,
-        );
+        render(<App />, { wrapper: BrowserRouter });
     });
 
-    it("initial render should be Homepage", () => {
+    test("initial render should be Homepage", () => {
         expect(window.location.pathname).toBe("/");
     });
 
-    it("mobile menu should have 3 links rendered after mobile menu opened", async () => {
+    test("mobile menu should have 3 links rendered after mobile menu opened", async () => {
         const user = userEvent.setup();
 
         const mobileMenuBtn = screen.getByRole("button", { name: "Open navigation" });
@@ -31,7 +27,7 @@ describe("Navigation", () => {
         expect(cartLink).toBeInTheDocument();
     });
 
-    it("click on links should change url according to link", async () => {
+    test("click on links should change url according to link", async () => {
         const user = userEvent.setup();
 
         const mobileMenuBtn = screen.getByRole("button", { name: "Open navigation" });
