@@ -1,7 +1,21 @@
-import { createRoutesStub, data, type LoaderFunction } from "react-router";
+import { createRoutesStub } from "react-router";
 import { test } from "vitest";
 import ShopPage from "./ShopPage";
-import { render, screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
+import type { Product } from "../../types/data";
+
+vi.mock("../../components/ProductCard/ProductCard", () => {
+    // Partially mocking product card
+    return {
+        default: ({ product }) => {
+            return (
+                <>
+                    <div data-testid="product-card">{product.name}</div>
+                </>
+            );
+        },
+    };
+});
 
 const mockData = {
     products: {
@@ -34,32 +48,52 @@ const mockData = {
     },
 };
 
-function setupStub(fn: LoaderFunction) {
-    const Stub = createRoutesStub([
-        {
-            path: "/shop",
-            Component: ShopPage,
-            loader: fn,
-        },
-    ]);
+describe("ShopPage", () => {
+    describe("With shop data", () => {
+        beforeEach(() => {
+            const Stub = createRoutesStub([
+                {
+                    path: "/shop",
+                    Component: ShopPage,
+                    loader: () => mockData,
+                },
+            ]);
 
-    render(<Stub initialEntries={["/shop"]} />);
-}
+            render(<Stub initialEntries={["/shop"]} />);
+        });
 
-describe("Shop page tests", () => {
-    test("if api returns data it should be displayed on the screen", async () => {
-        setupStub(() => mockData);
-        const articles = await screen.findAllByRole("article");
+        test("should render header for shop page", async () => {
+            const shopHeader = await screen.findByText("Explore latest collection");
+            expect(shopHeader).toBeInTheDocument();
+        });
 
-        expect(articles).toHaveLength(1);
+        test("if api returns data it should be displayed on the screen", async () => {
+            const productCard = await screen.findByTestId("product-card");
+            expect(productCard).toBeInTheDocument();
+            expect(productCard.textContent).toMatch(/test/i);
+        });
     });
 
-    test("If api will return empty array, app will have corresponding message about it", async () => {
-        setupStub(() => ({
-            products: { data: [] },
-        }));
-        const articles = screen.queryAllByRole("article");
+    describe("Without shop data", () => {
+        beforeEach(() => {
+            const Stub = createRoutesStub([
+                {
+                    path: "/shop",
+                    Component: ShopPage,
+                    loader: () => ({}),
+                },
+            ]);
 
-        expect(articles).toHaveLength(0);
+            render(<Stub initialEntries={["/shop"]} />);
+        });
+
+        test("if api will return nothing, page will have corresponding message about it", async () => {
+            const articles = screen.queryAllByRole("article");
+            expect(articles).toHaveLength(0);
+            const para = await screen.findByText(
+                "No available data for now. Please come back later",
+            );
+            expect(para).toBeInTheDocument();
+        });
     });
 });

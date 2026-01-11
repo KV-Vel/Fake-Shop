@@ -1,43 +1,65 @@
 import { useState } from "react";
 import styles from "./ProductCard.module.css";
-import { useOutletContext } from "react-router";
+import { Link, useOutletContext } from "react-router";
+import type { CartContext } from "../../types/data";
+import type { Product } from "../../types/data";
 
-interface ProductCardProps {
-    // id: number;
-    title: string;
-    price: number;
-    imageSource: string;
-}
+type ProductCardProps = {
+    product: Product;
+};
 
-export default function ProductCard({ title, price, imageSource }: ProductCardProps) {
-    const [addNumber, setAddNumber] = useState(0); // убрать и работать через cart
-    // const { addToCart } = useOutletContext();
+export default function ProductCard({ product }: ProductCardProps) {
+    const { cartItems, addToCart } = useOutletContext<CartContext>();
+    const current = cartItems.get(product.id);
+    const [count, setCount] = useState<number | "">(current?.count || 1); // убрать и работать через cart
+
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        if (Number(event.target.value) <= 0) {
+            setCount("");
+        } else {
+            setCount(Number(event.target.value));
+        }
+    }
+
+    function handleBlur(event: React.ChangeEvent<HTMLInputElement>) {
+        const isEmpty = event.target.value === "";
+        if (isEmpty) {
+            setCount(1);
+        }
+    }
 
     return (
         <article className={styles.card}>
             <div>
-                <img src={imageSource} alt="product item" />
+                <Link to={product.sku}>
+                    <img src={product.image_path} alt="product item" />
+                </Link>
             </div>
             <div className={styles.cardDescription}>
-                <h3 className={styles.cardHeader}>{title}</h3>
+                <h3 className={styles.cardHeader}>{product.name}</h3>
                 <div>
-                    <span className={styles.price}>${price}</span>
+                    <span className={styles.price}>${product.price}</span>
                 </div>
                 <div>
                     <button
                         type="button"
-                        onClick={() => setAddNumber((prevAddNumb) => prevAddNumb + 1)}
+                        onClick={() => setCount((prevAddNumb) => (prevAddNumb as number) + 1)}
                     >
                         +
                     </button>
                     <label aria-label="Number of buying items">
-                        <input type="number" value={addNumber} />
+                        <input
+                            type="number"
+                            value={count}
+                            onChange={(event) => handleChange(event)}
+                            onBlur={(event) => handleBlur(event)}
+                        />
                     </label>
                     <button
                         type="button"
                         onClick={() => {
-                            if (addNumber <= 0) return;
-                            setAddNumber((prevAddNumb) => prevAddNumb - 1);
+                            if ((count as number) - 1 <= 0) return;
+                            setCount((prevAddNumb) => (prevAddNumb as number) - 1);
                         }}
                     >
                         -
@@ -45,8 +67,17 @@ export default function ProductCard({ title, price, imageSource }: ProductCardPr
                     <button
                         type="button"
                         className={styles.addToCardBtn}
-                        onClick={() => addToCart(addNumber)}
+                        onClick={() =>
+                            addToCart({
+                                count: count as number,
+                                price: product.price,
+                                name: product.name,
+                                image_path: product.image_path,
+                                id: product.id,
+                            })
+                        }
                     >
+                        {/**Change to update or smth */}
                         Add to cart
                     </button>
                 </div>
