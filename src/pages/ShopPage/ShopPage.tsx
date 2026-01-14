@@ -19,7 +19,7 @@ export default function ShopPage() {
                     {({ data }) => (
                         <div className={styles.productsList}>
                             {data.map((product: Product) => (
-                                <ProductCard key={product.name} product={product} />
+                                <ProductCard key={product.id} product={product} />
                             ))}
                         </div>
                     )}
