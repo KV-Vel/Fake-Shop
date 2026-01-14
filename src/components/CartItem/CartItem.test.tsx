@@ -44,8 +44,10 @@ describe("CartItem", () => {
         expect(deleteBtn).toBeInTheDocument();
         await user.click(deleteBtn);
 
-        const mockedDeleteFunc = mocked.mock.results[0].value.deleteFromCart;
+        const mockedDeleteFunc: Mock = mocked.mock.results[0].value.deleteFromCart;
         expect(mockedDeleteFunc).toBeCalled();
         expect(mockedDeleteFunc).toBeCalledWith("2");
     });
+
+    test.todo("add Link to picures of cart items and test if it navigates to page");
 });
