@@ -3,30 +3,16 @@ import styles from "./ProductCard.module.css";
 import { Link, useOutletContext } from "react-router";
 import type { CartContext } from "../../types/data";
 import type { Product } from "../../types/data";
+import useProduct from "../../hooks/useProduct";
 
 type ProductCardProps = {
     product: Product;
 };
 
 export default function ProductCard({ product }: ProductCardProps) {
-    const { cartItems, addToCart } = useOutletContext<CartContext>();
-    const current = cartItems.get(product.id);
-    const [count, setCount] = useState<number | "">(current?.count || 1); // убрать и работать через cart
-
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        if (Number(event.target.value) <= 0) {
-            setCount("");
-        } else {
-            setCount(Number(event.target.value));
-        }
-    }
-
-    function handleBlur(event: React.ChangeEvent<HTMLInputElement>) {
-        const isEmpty = event.target.value === "";
-        if (isEmpty) {
-            setCount(1);
-        }
-    }
+    const { addToCart, onChange, onDecreaseCount, onIncreaseCount, handleBlur, count } = useProduct(
+        product.id,
+    );
 
     return (
         <article className={styles.card}>
@@ -41,27 +27,18 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <span className={styles.price}>${product.price}</span>
                 </div>
                 <div>
-                    <button
-                        type="button"
-                        onClick={() => setCount((prevAddNumb) => (prevAddNumb as number) + 1)}
-                    >
+                    <button type="button" onClick={onIncreaseCount}>
                         +
                     </button>
                     <label aria-label="Number of buying items">
                         <input
                             type="number"
                             value={count}
-                            onChange={(event) => handleChange(event)}
+                            onChange={(event) => onChange(event)}
                             onBlur={(event) => handleBlur(event)}
                         />
                     </label>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            if ((count as number) - 1 <= 0) return;
-                            setCount((prevAddNumb) => (prevAddNumb as number) - 1);
-                        }}
-                    >
+                    <button type="button" onClick={onDecreaseCount}>
                         -
                     </button>
                     <button
