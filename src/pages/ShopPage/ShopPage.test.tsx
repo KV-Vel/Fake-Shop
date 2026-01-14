@@ -4,10 +4,14 @@ import ShopPage from "./ShopPage";
 import { screen, render } from "@testing-library/react";
 import type { Product } from "../../types/data";
 
+type TestProps = {
+    product: Product;
+};
+
 vi.mock("../../components/ProductCard/ProductCard", () => {
     // Partially mocking product card
     return {
-        default: ({ product }) => {
+        default: ({ product }: TestProps) => {
             return (
                 <>
                     <div data-testid="product-card">{product.name}</div>
@@ -58,7 +62,6 @@ describe("ShopPage", () => {
                     loader: () => mockData,
                 },
             ]);
-
             render(<Stub initialEntries={["/shop"]} />);
         });
 

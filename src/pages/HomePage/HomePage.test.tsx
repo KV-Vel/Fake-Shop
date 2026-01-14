@@ -1,7 +1,6 @@
 import { screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router";
 import { render } from "@testing-library/react";
-import App from "../App";
 import HomePage from "./HomePage";
 import userEvent from "@testing-library/user-event";
 
