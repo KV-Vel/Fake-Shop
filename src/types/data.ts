@@ -26,7 +26,14 @@ export interface Product {
 export interface Response {
     success: boolean;
     count: number;
+}
+
+export interface CategoryResponse extends Response {
     data: Product[];
+}
+
+export interface SkuResponse extends Response {
+    data: Product;
 }
 
 export interface CartItem extends Pick<Product, "name" | "image_path" | "price" | "id"> {
