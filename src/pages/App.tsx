@@ -5,7 +5,6 @@ import type { CartItem, Product } from "../types/data";
 
 function App() {
     const [cartItems, setCartItems] = useState<Map<Product["id"], CartItem>>(new Map());
-    console.log(cartItems);
 
     function addToCart(item: CartItem) {
         if (item.count <= 0) return;
