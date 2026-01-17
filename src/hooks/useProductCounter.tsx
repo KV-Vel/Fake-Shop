@@ -2,7 +2,7 @@ import { useOutletContext } from "react-router";
 import type { CartContext, Product } from "../types/data";
 import { useState } from "react";
 
-export default function useProduct(id: Product["id"]) {
+export default function useProductCounter(id: Product["id"]) {
     const { cartItems, addToCart } = useOutletContext<CartContext>();
     const current = cartItems.get(id);
     const [count, setCount] = useState<number | "">(current?.count || 1);
@@ -24,12 +24,12 @@ export default function useProduct(id: Product["id"]) {
         setCount((prevAddNumb) => (prevAddNumb as number) + 1);
     }
 
-    function handleBlur(event: React.ChangeEvent<HTMLInputElement>) {
+    function onBlur(event: React.ChangeEvent<HTMLInputElement>) {
         const isEmpty = event.target.value === "";
         if (isEmpty) {
             setCount(1);
         }
     }
 
-    return { addToCart, onChange, onDecreaseCount, onIncreaseCount, handleBlur, count } as const;
+    return { addToCart, onChange, onDecreaseCount, onIncreaseCount, onBlur, count } as const;
 }
