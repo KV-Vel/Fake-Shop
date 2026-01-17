@@ -1,13 +1,13 @@
 import styles from "./ProductDetail.module.css";
 import { useLoaderData } from "react-router";
 import type { SkuResponse } from "../../types/data";
-import useProduct from "../../hooks/useProduct";
+import useProductCounter from "../../hooks/useProductCounter";
 
 export default function ProductDetail() {
     const { data }: SkuResponse = useLoaderData();
-    const { addToCart, onChange, onDecreaseCount, onIncreaseCount, handleBlur, count } = useProduct(
-        data.id,
-    );
+    const { addToCart, onChange, onDecreaseCount, onIncreaseCount, onBlur, count } =
+        useProductCounter(data.id);
+
     return (
         <article className={styles.productDetailWrapper}>
             <div>
@@ -26,7 +26,7 @@ export default function ProductDetail() {
                         type="number"
                         value={count}
                         onChange={(event) => onChange(event)}
-                        onBlur={(event) => handleBlur(event)}
+                        onBlur={(event) => onBlur(event)}
                         className={styles.countInput}
                         id="items-count"
                         inputMode="numeric"
