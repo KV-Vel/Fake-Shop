@@ -2,11 +2,35 @@ import { render, screen } from "@testing-library/react";
 import ProductDetail from "./ProductDetail";
 import { createRoutesStub, useOutletContext } from "react-router";
 import type { Mock } from "vitest";
-import type { CartItem } from "../../types/data";
+import type { Product } from "../../types/data";
 import userEvent from "@testing-library/user-event";
 
+const testData: Product = {
+    description: "test description",
+    images: [
+        "https://wvxxlssoccbctxspmtyy.supabase.co/storage/v1/object/public/products/public/4551ca3b-1db8-498a-980c-afab89ef2e1f.jpeg",
+    ],
+    price: 599.99,
+    title: "Modern Wooden Sofa",
+    id: 7,
+    creationAt: "2 created",
+    updatedAt: "2 updated",
+    slug: "2",
+    category: {
+        name: "furniture",
+        image: "...",
+        id: 1,
+        slug: "1",
+        creationAt: "test",
+        updatedAt: "tested",
+    },
+};
+const mockData = {
+    data: testData,
+};
+
 vi.mock("react-router", async () => {
-    const actual = await import("react-router");
+    const actual = await vi.importActual("react-router");
 
     return {
         ...actual,
@@ -14,47 +38,17 @@ vi.mock("react-router", async () => {
     };
 });
 
-const mockData = {
-    success: true,
-    data: {
-        id: "7e0664ce-e5d7-4987-b5c2-a4de1d8033d9",
-        name: "Modern Wooden Sofa",
-        category: "sofa",
-        description:
-            "This modern wooden sofa combines comfort with contemporary design, perfect for any living space.",
-        wood_type: "walnut",
-        finish: "medium",
-        dimensions: {
-            depth: 35,
-            width: 80,
-            height: 30,
-        },
-        price: 599.99,
-        weight: 75,
-        image_path:
-            "https://wvxxlssoccbctxspmtyy.supabase.co/storage/v1/object/public/products/public/4551ca3b-1db8-498a-980c-afab89ef2e1f.jpeg",
-        stock: 1000,
-        sku: "test_sku",
-        status: "active",
-        created_at: "2024-11-10T14:32:30.520177+00:00",
-        updated_at: "2024-11-11T22:49:09.508134+00:00",
-        featured: true,
-        discount_price: 485,
-        tags: null,
-    },
-};
-
 describe("ProductDetail", () => {
     describe("Without items in cart", () => {
         beforeEach(() => {
             const Stub = createRoutesStub([
-                { path: "/shop/:sku", Component: ProductDetail, loader: () => mockData },
+                { path: "/shop/:id", Component: ProductDetail, loader: () => mockData },
             ]);
-            (useOutletContext as Mock).mockReturnValue({
+            vi.mocked(useOutletContext).mockReturnValue({
                 cartItems: new Map(),
                 addToCart: vi.fn(),
             });
-            render(<Stub initialEntries={["/shop/:sku"]} />);
+            render(<Stub initialEntries={["/shop/:id"]} />);
         });
 
         test("Should properly render component using loader", async () => {
@@ -72,19 +66,20 @@ describe("ProductDetail", () => {
         let mocked: Mock;
         beforeEach(() => {
             const Stub = createRoutesStub([
-                { path: "/shop/:sku", Component: ProductDetail, loader: () => mockData },
+                { path: "/shop/:id", Component: ProductDetail, loader: () => mockData },
             ]);
 
-            mocked = (useOutletContext as Mock).mockReturnValue({
+            mocked = vi.mocked(useOutletContext).mockReturnValue({
                 cartItems: new Map([
                     [
-                        "7e0664ce-e5d7-4987-b5c2-a4de1d8033d9",
+                        "7",
                         {
                             count: 2,
-                            id: "7e0664ce-e5d7-4987-b5c2-a4de1d8033d9",
-                            name: "Modern Wooden Sofa",
-                            image_path:
+                            id: "7",
+                            title: "Modern Wooden Sofa",
+                            images: [
                                 "https://wvxxlssoccbctxspmtyy.supabase.co/storage/v1/object/public/products/public/4551ca3b-1db8-498a-980c-afab89ef2e1f.jpeg",
+                            ],
                             price: 599.99,
                         },
                     ],
@@ -92,7 +87,7 @@ describe("ProductDetail", () => {
                 addToCart: vi.fn(),
             });
 
-            render(<Stub initialEntries={["/shop/:sku"]} />);
+            render(<Stub initialEntries={["/shop/:id"]} />);
         });
 
         test("Input with product counter should be rendered using cart data", async () => {
@@ -119,7 +114,7 @@ describe("ProductDetail", () => {
         test("adding to cart function will be called", async () => {
             const user = userEvent.setup();
             const increaseBtn = await screen.findByRole("button", { name: "+" });
-            const addToCardBtn = await screen.findByRole("button", { name: "Add to cart" });
+            const addToCardBtn = await screen.findByRole("button", { name: "Update" });
             await user.click(increaseBtn);
             await user.click(addToCardBtn);
 
@@ -128,10 +123,11 @@ describe("ProductDetail", () => {
             expect(addToCartFn).toBeCalled();
             expect(addToCartFn).toBeCalledWith({
                 count: 3,
-                id: "7e0664ce-e5d7-4987-b5c2-a4de1d8033d9",
-                name: "Modern Wooden Sofa",
-                image_path:
+                id: "7",
+                title: "Modern Wooden Sofa",
+                images: [
                     "https://wvxxlssoccbctxspmtyy.supabase.co/storage/v1/object/public/products/public/4551ca3b-1db8-498a-980c-afab89ef2e1f.jpeg",
+                ],
                 price: 599.99,
             });
         });

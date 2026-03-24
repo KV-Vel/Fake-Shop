@@ -10,7 +10,7 @@ const routes: RouteObject[] = [
     {
         path: "/",
         element: <App />,
-        errorElement: <ErrorPage />,
+        ErrorBoundary: ErrorPage,
 
         children: [
             {
@@ -21,30 +21,35 @@ const routes: RouteObject[] = [
                 path: "shop",
                 element: <ShopPage />,
                 loader: async () => {
-                    const products = fetch(
-                        "https://furniture-api.fly.dev/v1/products?category=sofa",
-                    ).then((resp) => resp.json());
+                    const response = fetch(
+                        "https://api.escuelajs.co/api/v1/products/?categorySlug=furniture",
+                    )
+                        .then((resp) => {
+                            if (!resp.ok) {
+                                throw new Error("Can not load the data");
+                            }
+                            return resp.json();
+                        })
+                        .catch((err) => {
+                            throw new Error(err);
+                        });
 
-                    // if (!response.ok) {
-                    //     throw new Error("Can't access sku data");
-                    // }
-
-                    return { products };
+                    return { products: response };
                 },
             },
             {
-                path: "shop/:sku",
+                path: "shop/:id",
                 element: <ProductDetail />,
                 loader: async ({ params }) => {
                     const response = await fetch(
-                        `https://furniture-api.fly.dev/v1/products/${params.sku}`,
+                        `https://api.escuelajs.co/api/v1/products/${params.id}`,
                     );
 
                     if (!response.ok) {
-                        throw new Error("Can't access sku data");
+                        throw new Error("Can not load the data");
                     }
-
-                    return response.json();
+                    const data = await response.json();
+                    return { data };
                 },
             },
             {

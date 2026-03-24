@@ -1,19 +1,14 @@
-import { screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import { BrowserRouter } from "react-router";
-import { render } from "@testing-library/react";
+
 import HomePage from "./HomePage";
 import userEvent from "@testing-library/user-event";
 
 describe("HomePage", () => {
     beforeEach(() => {
-        render(
-            <BrowserRouter>
-                <HomePage />
-            </BrowserRouter>,
-        );
+        render(<HomePage />, { wrapper: BrowserRouter });
     });
     test("Homepage have hero section with 2 articles", () => {
-        screen.debug();
         const articles = screen.getAllByRole("article");
         expect(articles).toHaveLength(2);
     });

@@ -1,7 +1,6 @@
 import CartPage from "../../pages/CartPage/CartPage";
 import { render } from "@testing-library/react";
-import { useOutletContext } from "react-router";
-import type { Mock } from "vitest";
+import { BrowserRouter, useOutletContext } from "react-router";
 import type { CartContext } from "../../types/data";
 
 vi.mock("react-router", async () => {
@@ -16,7 +15,7 @@ vi.mock("react-router", async () => {
 describe("Cart", () => {
     describe("Items not in cart", () => {
         beforeEach(() => {
-            (useOutletContext as Mock).mockReturnValue({
+            vi.mocked(useOutletContext).mockReturnValue({
                 cartItems: new Map(),
                 addToCart: vi.fn(),
                 deleteFromCart: vi.fn(),
@@ -24,16 +23,15 @@ describe("Cart", () => {
         });
 
         test("if no items in cart, should display corresponding message", () => {
-            const { getByText } = render(<CartPage />);
-
-            const noItemsMessagePara = getByText(/no items in cart/i);
+            const { getByText } = render(<CartPage />, { wrapper: BrowserRouter });
+            const noItemsMessagePara = getByText(/your shopping cart is empty/i);
             expect(noItemsMessagePara).toBeInTheDocument();
         });
     });
 
     describe("Items in cart", () => {
         beforeEach(() => {
-            (useOutletContext as Mock).mockReturnValue({
+            vi.mocked(useOutletContext).mockReturnValue({
                 cartItems: new Map([
                     [
                         "4",
@@ -41,8 +39,8 @@ describe("Cart", () => {
                             price: 399,
                             count: 2,
                             id: "1",
-                            name: "Modern sofa",
-                            image_path: "image_path",
+                            title: "Modern sofa",
+                            images: ["image_path"],
                         },
                     ],
                 ]),

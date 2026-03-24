@@ -1,12 +1,12 @@
 import { BrowserRouter, useOutletContext } from "react-router";
 import { test, type Mock } from "vitest";
-import type { CartContext, Product } from "../../types/data";
+import type { CartContext, Category, Product } from "../../types/data";
 import ProductCard from "./ProductCard";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 vi.mock("react-router", async () => {
-    const reactRouter = await import("react-router");
+    const reactRouter = await vi.importActual("react-router");
 
     return {
         ...reactRouter,
@@ -21,42 +21,24 @@ const cartContext: CartContext = {
 };
 
 const productData: Product = {
-    id: "1",
-    name: "Modern Chair",
-    category: "Furniture",
+    id: 1,
+    slug: "test_slug",
+    title: "Modern Chair",
+    category: {} as Category,
     description: "Modern Chair from our store",
-    wood_type: "White oak",
-    finish: "...",
-    dimensions: {
-        depth: 255,
-        width: 255,
-        height: 355,
-    },
     price: 125,
-    weight: 2,
-    image_path: "image_path",
-    stock: 12,
-    sku: "TEST",
-    status: "active",
-    created_at: "today",
-    updated_at: "today",
-    featured: false,
-    discount_price: 100,
-    tags: null,
+    images: ["image_path"],
+    creationAt: "today",
+    updatedAt: "today",
 };
 
 describe("ProductCard", () => {
     let context: Mock;
-    beforeEach(() => {
-        context = (useOutletContext as Mock).mockReturnValue(cartContext);
-        render(
-            <BrowserRouter>
-                <ProductCard product={productData} />
-            </BrowserRouter>,
-        );
-    });
 
     test("Product Card renders", () => {
+        context = vi.mocked(useOutletContext).mockReturnValue(cartContext);
+        render(<ProductCard inCart={false} product={productData} />, { wrapper: BrowserRouter });
+
         const productName = screen.getByText("Modern Chair");
         const cardArticle = screen.getByRole("article");
 
@@ -64,7 +46,31 @@ describe("ProductCard", () => {
         expect(productName).toBeInTheDocument();
     });
 
+    test("Add to cart should change text depending on the product buy state", async () => {
+        const user = userEvent.setup();
+
+        context = vi.mocked(useOutletContext).mockReturnValue(cartContext);
+        const { rerender } = render(<ProductCard inCart={false} product={productData} />, {
+            wrapper: BrowserRouter,
+        });
+
+        const addToCartbtn = screen.getByRole("button", { name: /add to cart/i });
+        expect(addToCartbtn).toBeInTheDocument();
+        expect(addToCartbtn).toHaveTextContent(/add to cart/i);
+
+        await user.click(addToCartbtn);
+
+        rerender(<ProductCard inCart={true} product={productData} />);
+        expect(addToCartbtn).toHaveTextContent(/update/i);
+    });
+
     describe("Interactions (functions, inputs, buttons)", () => {
+        beforeEach(() => {
+            context = vi.mocked(useOutletContext).mockReturnValue(cartContext);
+            render(<ProductCard inCart={false} product={productData} />, {
+                wrapper: BrowserRouter,
+            });
+        });
         test("At first render count variable should be 1", () => {
             const input = screen.getByDisplayValue(1);
             expect(input).toBeInTheDocument();

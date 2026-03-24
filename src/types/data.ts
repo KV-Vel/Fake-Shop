@@ -1,26 +1,21 @@
-export interface Product {
-    id: string;
+interface Entity {
+    id: number;
+    slug: string;
+    creationAt: string;
+    updatedAt: string;
+}
+
+export interface Category extends Entity {
     name: string;
-    category: string;
+    image: string;
+}
+
+export interface Product extends Entity {
+    category: Category;
     description: string;
-    wood_type: string;
-    finish: string;
-    dimensions: {
-        depth: number;
-        width: number;
-        height: number;
-    };
+    images: string[];
     price: number;
-    weight: number;
-    image_path: string;
-    stock: number;
-    sku: string;
-    status: "active" | "inactive";
-    created_at: string;
-    updated_at: string;
-    featured: boolean;
-    discount_price?: number;
-    tags?: string[] | null;
+    title: string;
 }
 
 export interface Response {
@@ -36,12 +31,13 @@ export interface SkuResponse extends Response {
     data: Product;
 }
 
-export interface CartItem extends Pick<Product, "name" | "image_path" | "price" | "id"> {
+export interface CartItem extends Pick<Product, "title" | "images" | "price"> {
+    id: string;
     count: number;
 }
 
 export type CartContext = {
-    cartItems: Map<Product["id"], CartItem>;
+    cartItems: Map<string, CartItem>;
     addToCart: (item: CartItem) => void;
-    deleteFromCart: (id: Product["id"]) => void;
+    deleteFromCart: (id: string) => void;
 };

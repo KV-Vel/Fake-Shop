@@ -1,5 +1,17 @@
 @import "./reset.css";
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Prosto+One&display=swap");
+
+:root {
+    --additional-blue: rgb(28 95 142);
+    --pale-blue: #7898c4;
+    --text-xs: 0.8rem;
+    --text-s: 0.9rem;
+    --text-m: 1rem;
+
+    --dark-text: rgb(10 10 10);
+
+    --header-minSize: 70px;
+}
 
 html {
     scroll-behavior: smooth;
@@ -7,15 +19,22 @@ html {
 
 body {
     overflow-x: hidden;
-    background-color: aliceblue;
+    font-family: system-ui;
+    background: linear-gradient(90deg, transparent, #7898c445);
 }
 
 #root {
     display: flex;
     flex-direction: column;
-    gap: 5rem;
+    min-height: 100vh;
 }
 
 input {
     width: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }

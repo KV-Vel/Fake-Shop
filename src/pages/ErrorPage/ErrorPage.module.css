@@ -1,0 +1,28 @@
+.errorPageWrapper {
+    margin-block: auto;
+    margin-inline: 1rem;
+    text-align: center;
+}
+
+.errorInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    & > h1 {
+        font-family: "DM Sans", serif;
+        text-transform: uppercase;
+        color: rgb(0 102 255);
+    }
+
+    p {
+        font-family: "DM Sans", serif;
+    }
+}
+
+.getBackBtn {
+    font-family: "DM Sans", sans-serif;
+    background-color: #1a496d;
+    padding: 17px;
+    border-radius: 5px;
+    color: #f1f1f1;
+}

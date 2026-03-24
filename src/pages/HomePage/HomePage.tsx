@@ -7,12 +7,12 @@ export default function HomePage() {
         <div className={styles.homePageWrapper}>
             <div className={styles.heroSection}>
                 <article className={styles.heroSectionDescription}>
-                    <h1 className={styles.animated}>Make your home a better place</h1>
+                    <h2 className={styles.animated}>Make your home a better place</h2>
                     <p className={styles.animated}>
                         We create thoughtfully crafted furniture for a home that reflects your style
                         and embraces comfort.
                     </p>
-                    <Link to="/shop">
+                    <Link to="/shop" title="Перейти в магазин">
                         <button type="button" className={styles.shopNowBtn}>
                             Explore collection
                         </button>
@@ -20,14 +20,15 @@ export default function HomePage() {
                 </article>
 
                 <article className={`${styles.armChairWrapper} ${styles.animated}`}>
-                    <h2>Popular now</h2>
                     <img
                         src={chairImg}
-                        alt="armchair with coffee table"
+                        alt="new arrival: armchair with coffee table"
                         className={styles.armChair}
                     />
                     <div className={styles.circle} aria-hidden="true"></div>
-                    <div className={styles.newArrival}>New arrival</div>
+                    <div className={styles.newArrival} aria-hidden="true">
+                        New arrival
+                    </div>
                 </article>
             </div>
         </div>

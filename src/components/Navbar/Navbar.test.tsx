@@ -1,11 +1,11 @@
 import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import App from "../../pages/App";
 import { BrowserRouter } from "react-router";
+import Navbar from "./Navbar";
 
 describe("Navigation", () => {
     beforeEach(() => {
-        render(<App />, { wrapper: BrowserRouter });
+        render(<Navbar cartItemsSize={2} />, { wrapper: BrowserRouter });
     });
 
     test("initial render should be Homepage", () => {
@@ -18,13 +18,13 @@ describe("Navigation", () => {
         const mobileMenuBtn = screen.getByRole("button", { name: "Open navigation" });
         await user.click(mobileMenuBtn);
 
-        const shopLink = screen.getByRole("link", { name: /shop/i });
-        const homeLink = screen.getByRole("link", { name: /home/i });
-        const cartLink = screen.getByRole("link", { name: /cart/i });
+        const shopLink = screen.getAllByRole("link", { name: /shop/i });
+        const homeLink = screen.getAllByRole("link", { name: /home/i });
+        const cartLink = screen.getAllByRole("link", { name: /cart/i });
 
-        expect(shopLink).toBeInTheDocument();
-        expect(homeLink).toBeInTheDocument();
-        expect(cartLink).toBeInTheDocument();
+        expect(shopLink[0]).toBeInTheDocument();
+        expect(homeLink[0]).toBeInTheDocument();
+        expect(cartLink[0]).toBeInTheDocument();
     });
 
     test("click on links should change url according to link", async () => {
@@ -43,5 +43,11 @@ describe("Navigation", () => {
 
         await user.click(homeLink);
         expect(window.location.pathname).toBe("/");
+    });
+
+    test("If there are items in the cart, number of items should be displayed", () => {
+        // Mobile + Desktop menu
+        const itemsCount = screen.getAllByLabelText("2 items in cart");
+        expect(itemsCount).toHaveLength(2);
     });
 });

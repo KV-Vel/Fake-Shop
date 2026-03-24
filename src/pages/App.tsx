@@ -1,14 +1,14 @@
 import { Outlet } from "react-router";
 import Navbar from "../components/Navbar/Navbar";
 import { useState } from "react";
-import type { CartItem, Product } from "../types/data";
+import type { CartItem } from "../types/data";
 
 function App() {
-    const [cartItems, setCartItems] = useState<Map<Product["id"], CartItem>>(new Map());
+    const [cartItems, setCartItems] = useState<Map<string, CartItem>>(new Map());
 
     function addToCart(item: CartItem) {
         if (item.count <= 0) return;
-        // Продумать как еще useEffect использовать если пользователь вводит BigInt
+
         if (isNaN(item.count)) return;
 
         setCartItems((prevCartItems) => {
@@ -17,7 +17,7 @@ function App() {
         });
     }
 
-    function deleteFromCart(id: Product["id"]) {
+    function deleteFromCart(id: string) {
         setCartItems((prevCartItems) => {
             prevCartItems.delete(id);
             return new Map(prevCartItems);
@@ -26,7 +26,7 @@ function App() {
 
     return (
         <>
-            <Navbar />
+            <Navbar cartItemsSize={cartItems.size} />
             <main>
                 <Outlet context={{ cartItems, addToCart, deleteFromCart }} />
             </main>

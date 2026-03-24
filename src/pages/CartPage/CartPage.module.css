@@ -1,3 +1,126 @@
-.wrapper {
+.emptyMsgWrapper {
+    height: calc(100vh - var(--header-minSize));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     padding-inline: 1rem;
+}
+
+.emptyMsgInnerWrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+    font-family: "DM Sans", system-ui, sans-serif;
+
+    img {
+        max-width: 250px;
+        min-width: 100px;
+        width: 100%;
+        margin-block-end: 2rem;
+    }
+}
+
+.emptyMsg {
+    font-size: clamp(1.5rem, 5vw + 0.5rem, 2.5rem);
+    font-weight: 200;
+}
+
+a {
+    width: 100%;
+}
+
+.backToShopBtn {
+    background-color: var(--additional-blue);
+    color: #fff;
+    width: 100%;
+    padding-block: 1rem;
+    max-width: 320px;
+    border-radius: 5px;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+
+    gap: 2rem;
+    margin-block: 5rem;
+    color: var(--dark-text);
+    max-width: 1030px;
+    margin-inline: auto;
+    padding-inline: 1rem;
+}
+
+.cartHeader {
+    color: #333333;
+    line-height: 1.3;
+    font-size: clamp(2rem, 2.5vw, 4rem);
+    font-weight: 300;
+    font-family: "Fraunces", system-ui;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.orderWrapper {
+    min-width: calc(300px - 1rem);
+    width: 100%;
+    & > .orderInfo {
+        background-color: rgba(255, 255, 255, 0.801);
+        padding: 2rem;
+        border-radius: 5px;
+        border: 2px solid var(--additional-blue);
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        .orderRows {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding-block: 2rem;
+        }
+        ul > li {
+            display: flex;
+            justify-content: space-between;
+            .dashedLine {
+                border-bottom: 1px dashed;
+                width: 100%;
+            }
+        }
+
+        .header {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-bottom: 1px solid black;
+            padding-bottom: 5px;
+        }
+    }
+
+    width: 100%;
+    font-family: "DM Sans";
+    letter-spacing: 1.2px;
+}
+
+.cartInfoWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    & > .cartList {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+    }
+}
+
+.checkoutBtn {
+    background-color: #1a496d;
+    padding: 17px;
+    border-radius: 5px;
+    color: #f1f1f1;
+}
+
+@media (min-width: 700px) {
+    .cartInfoWrapper {
+        flex-direction: row;
+    }
 }

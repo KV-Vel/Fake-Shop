@@ -6,7 +6,7 @@ import CartItem from "./CartItem";
 import userEvent from "@testing-library/user-event";
 
 vi.mock("react-router", async () => {
-    const actual = await import("react-router");
+    const actual = await vi.importActual("react-router");
 
     return {
         ...actual,
@@ -23,8 +23,8 @@ const cartContext: CartContext = {
 describe("CartItem", () => {
     let mocked: Mock;
     beforeEach(() => {
-        mocked = (useOutletContext as Mock).mockReturnValue(cartContext);
-        render(<CartItem count={3} id="2" name="chair" image_path="image_path" price={50} />);
+        mocked = vi.mocked(useOutletContext).mockReturnValue(cartContext);
+        render(<CartItem count={3} id={"2"} title="chair" images={["image_path"]} price={50} />);
     });
 
     test("should render CartItem with proper props provided", () => {
@@ -49,5 +49,8 @@ describe("CartItem", () => {
         expect(mockedDeleteFunc).toBeCalledWith("2");
     });
 
-    test.todo("add Link to picures of cart items and test if it navigates to page");
+    test("Input will display correct items counter", () => {
+        const input = screen.getByDisplayValue(3);
+        expect(input).toBeInTheDocument();
+    });
 });

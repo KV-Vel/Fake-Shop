@@ -2,9 +2,10 @@ import { useOutletContext } from "react-router";
 import type { CartContext, Product } from "../types/data";
 import { useState } from "react";
 
-export default function useProductCounter(id: Product["id"]) {
+export default function useProduct(id: Product["id"]) {
     const { cartItems, addToCart } = useOutletContext<CartContext>();
-    const current = cartItems.get(id);
+    const current = cartItems.get(String(id));
+    const inCart = cartItems.has(String(id));
     const [count, setCount] = useState<number | "">(current?.count || 1);
 
     function onChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -31,5 +32,13 @@ export default function useProductCounter(id: Product["id"]) {
         }
     }
 
-    return { addToCart, onChange, onDecreaseCount, onIncreaseCount, onBlur, count } as const;
+    return {
+        addToCart,
+        onChange,
+        onDecreaseCount,
+        onIncreaseCount,
+        onBlur,
+        inCart,
+        count,
+    } as const;
 }

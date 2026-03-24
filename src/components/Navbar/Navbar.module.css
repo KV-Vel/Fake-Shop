@@ -1,18 +1,28 @@
+header {
+    display: flex;
+    align-items: center;
+    background-color: #dee6ff4a;
+    padding: 1rem;
+    box-shadow: 0px 1px 4px 1px #14315247;
+    background: linear-gradient(270deg, #7898c445, #8f9fb80f);
+    min-height: var(--header-minSize);
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+}
+
 .mobileMenuBtn {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    position: absolute;
-    top: 0;
-    left: 0;
     z-index: 2;
-    margin-block-start: 20px;
     padding: 10px;
 }
 
 .mobileMenuLine {
     width: 35px;
-    height: 2px;
+    height: 1px;
     background-color: black;
     transition: transform 0.2s ease;
 }
@@ -27,7 +37,7 @@
     transform: rotate(-45deg) translateY(-5px);
 }
 
-.navigationLinksList {
+.navigationLinksListMobile {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,20 +55,106 @@
     z-index: 1;
     padding-block-start: 30px;
     padding-inline-start: calc(30%);
-    align-items: center;
-
     gap: 1rem;
+
+    li {
+        padding-inline-start: 45%;
+    }
 }
-.navigationLinksList.active {
+.navigationLinksListMobile.active {
     transform: translate(-30%);
+}
+
+.headerTextWrapper {
+    width: 100%;
+    text-align: center;
+    border-radius: -5px;
+    padding: 5px;
+}
+
+.headerText {
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 200;
+    color: #252525;
+    letter-spacing: 5px;
+    font-size: 24px;
+    color: #7f8e9eb5;
 }
 
 body:has(.navigationLinksList.active) {
     overflow-y: hidden;
 }
 
+header div nav li a {
+    position: relative;
+    vertical-align: text-top;
+}
+
+.itemsInCart {
+    background-color: #ffffff9e;
+    border-radius: 5px;
+    padding: 2.5px 2.5px 0 2.5px;
+    font-size: var(--text-xs);
+    margin-inline-start: 5px;
+    vertical-align: text-top;
+
+    box-shadow: 0 0 7px 1px #ffffff26 inset;
+}
+.navigationLinksList {
+    display: none;
+}
+
+header > div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.navLink {
+    border-bottom: 1px solid transparent;
+}
+
+.activeLink {
+    border-bottom: 1px solid black;
+}
+
 @media (min-width: 612px) {
     .mobileMenuBtn {
         display: none;
+    }
+
+    .headerTextWrapper {
+        text-align: left;
+    }
+
+    .navigationLinksList {
+        position: initial;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        font-family: "DM Sans", sans-serif;
+        font-size: 1rem;
+        text-transform: uppercase;
+        padding: 0;
+        transform: translate(0);
+        transition: none !important;
+        background-color: transparent;
+        color: var(--pale-blue);
+        vertical-align: text-top;
+        gap: 1rem;
+    }
+
+    .navigationLinksListMobile {
+        display: none;
+    }
+
+    header > div {
+        max-width: 1030px;
+        margin-inline: auto;
+    }
+
+    .activeLink {
+        border-bottom: 1px solid var(--additional-blue);
     }
 }
