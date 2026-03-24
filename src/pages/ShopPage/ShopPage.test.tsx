@@ -1,7 +1,7 @@
 import { createRoutesStub, useOutletContext } from "react-router";
 import { test } from "vitest";
 import ShopPage from "./ShopPage";
-import { screen, render, waitForElementToBeRemoved, waitFor } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import type { CartContext, Product } from "../../types/data";
 
 type TestProps = {
